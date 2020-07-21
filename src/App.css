@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-logo {
@@ -37,9 +40,18 @@
   }
 }
 
-.App .box {
-  padding: 20px;
+.App .input {
+  padding: 10px;
   margin: auto;
-  width: 70%;
-  background-color: red;
+  width: 20%;
+  margin: 10px;
+}
+
+.App .title {
+  border: 1px solid white;
+}
+
+.App .subtitle {
+text-align: left;
+margin-left: 30px;
 }

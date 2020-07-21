@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
-import { listNotes } from './graphql/queries';
-import { createNote as createNoteMutation, deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from './graphql/mutations';
-
-import './App.css';
-
-import LessonBuilder from './Container/LessonBuilder/LessonBuilder';
+import { listNotes } from '../../graphql/queries';
+import { createNote as createNoteMutation, deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
 // import Editor from './Component/Editor'
 
 const initialFormState = { name: '', description: '', title: '', component: ''}

@@ -9,6 +9,7 @@ export const getNote = /* GraphQL */ `
       description
       title
       image
+      component
       createdAt
       updatedAt
     }
@@ -27,6 +28,7 @@ export const listNotes = /* GraphQL */ `
         description
         title
         image
+        component
         createdAt
         updatedAt
       }
