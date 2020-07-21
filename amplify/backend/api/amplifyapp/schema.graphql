@@ -2,6 +2,7 @@ type Note @model {
   id: ID!
   name: String!
   description: String
+  title: String
   image: String
   component: AWSJSON
 }
