@@ -1,0 +1,16 @@
+
+.Dashboard {
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
+  text-align: center;
+  font-size: calc(10px + 2vmin);
+  color: 	#333847;
+  height: 100%;
+}
+
+.Cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

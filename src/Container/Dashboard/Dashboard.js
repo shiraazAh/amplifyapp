@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import Toolbar from '../../Component/Navigation/Toolbar/Toolbar';
+import Card from '../../Component/UI/Card/Card';
+
+import classes from './Dashboard.module.css'
 
 class Dashboard extends Component {
     render() {
         return (
-            <div>
-                <p>Click below to create</p>
+            <div className={classes.Dashboard}>
+                <Toolbar></Toolbar>
+                <p>Choose a Lesson Plan</p>
                 <NavLink to='/lessonbuilder' exact>Create</NavLink>
-
-                <ul>
-                    <li></li>
-                </ul>
+                <div className={classes.Cards}>
+                <Card />
+                <Card />
+                <Card />
+                </div>
             </div>
         )
     }
