@@ -14,3 +14,7 @@
     flex-direction: column;
     align-items: center;
 }
+
+.Button {
+  border: 1px solid black;
+}
