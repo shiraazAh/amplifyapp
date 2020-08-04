@@ -3,7 +3,7 @@ import { API, Storage } from 'aws-amplify';
 import { listNotes } from '../../graphql/queries';
 import { deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
 
-import '../../App.css';
+import '../../App.module.css';
 
 // import Editor from './Component/Editor'
 
