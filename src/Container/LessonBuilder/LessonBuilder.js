@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
 import { listNotes } from '../../graphql/queries';
 import { deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
+import Spinner from '../../Component/UI/Spinner/Spinner';
 
 import '../../App.module.css';
+import classes from './LessonBuilder.module.css';
 
 // import Editor from './Component/Editor'
 
@@ -13,6 +15,7 @@ let Id = 0;
 function LessonBuilder() {
   const [notes, setNotes] = useState({id:'', name: '', description: '', title: '', component: []});
   const [formData, setFormData] = useState(initialFormState);
+  const [SpinnerHandler, setSpinnerHandler] = useState(true);
 
   useEffect(() => {
     fetchNotes();
@@ -50,6 +53,7 @@ function LessonBuilder() {
 
     // Set the state to the value
     setNotes(notesFromAPI);
+    setSpinnerHandler(false);
 
   }
 
@@ -170,6 +174,7 @@ function LessonBuilder() {
 
       <button onClick={updateNote}>Create</button>
       <div style={{marginBottom: 30}}>
+      {SpinnerHandler ? <div className={classes.Spinner}><Spinner/></div> : null}
       {
         notes.component.map((note, i) => (
           <div key={note.id || note.name}>
