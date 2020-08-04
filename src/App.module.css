@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+  font-size: calc(10px + 2vmin);
+  color: 	#333847;
+}
+
+.App .input {
+  padding: 10px;
+  margin: auto;
+  width: 20%;
+  margin: 10px;
+}
+
+.App .title {
+  border: 1px solid white;
+}
+
+.App .subtitle {
+text-align: left;
+margin-left: 30px;
+}
+
