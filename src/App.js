@@ -1,8 +1,8 @@
 import React from 'react';
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import './App.css';
+import classes from './App.module.css';
 
 import LessonBuilder from './Container/LessonBuilder/LessonBuilder';
 import Dashboard from './Container/Dashboard/Dashboard'
@@ -12,12 +12,11 @@ function App() {
   return (
 
     <BrowserRouter>
-      <div className="App">
+      <div className={classes.App}>
       <Switch>
       <Route path="/lessonbuilder" exact component={LessonBuilder} />
       <Route path="/" exact component={Dashboard} />
       </Switch>
-      <AmplifySignOut />
       </div>
     </BrowserRouter>
   );
