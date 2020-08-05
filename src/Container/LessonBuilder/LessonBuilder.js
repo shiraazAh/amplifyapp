@@ -3,6 +3,7 @@ import { API, Storage } from 'aws-amplify';
 import { listNotes } from '../../graphql/queries';
 import { deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
 import Spinner from '../../Component/UI/Spinner/Spinner';
+import Modal from '../../Component/UI/Modal/CreateModeModal';
 
 import '../../App.module.css';
 import classes from './LessonBuilder.module.css';
@@ -16,6 +17,16 @@ function LessonBuilder() {
   const [notes, setNotes] = useState({id:'', name: '', description: '', title: '', component: []});
   const [formData, setFormData] = useState(initialFormState);
   const [SpinnerHandler, setSpinnerHandler] = useState(true);
+
+  const [modalState, setModal] = React.useState(true);
+
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
+
+  const handleClose = () => {
+    setModal(false);
+  };
 
   useEffect(() => {
     fetchNotes();
@@ -148,7 +159,8 @@ function LessonBuilder() {
 
   return (
     <div className="App">
-      <h1>Create Article</h1>
+      <Modal clicked={handleClose} open={modalState}/>
+      <h1>Create Mode</h1>
       <input
         type="file"
         onChange={onChange}
