@@ -65,8 +65,8 @@ const SimpleModal = (props) => {
       (You can change it later as well)
       </Typography>
       <div>
-        <Button variant="contained" color="Primary" className={classes.button} onClick={props.clicked}>Continue</Button>
-        <Button variant="contained" color="Secondary" className={classes.button}>Cancel</Button>
+        <Button variant="contained" color="primary" className={classes.button} onClick={props.clicked}>Continue</Button>
+        <Button variant="contained" color="secondary" className={classes.button}>Cancel</Button>
       </div>
     </div>
   );
