@@ -1,8 +1,7 @@
 type Note @model {
   id: ID!
   name: String!
-  description: String
-  title: String
+  editing: Boolean!
   image: String
   component: AWSJSON
 }
