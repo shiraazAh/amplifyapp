@@ -11,29 +11,27 @@ import classes from './LessonBuilder.module.css';
 // import Editor from './Component/Editor'
 
 const initialFormState = { name: '', description: '', title: ''};
+const initialLessonState = {name: '', editing: true, component: []}
 let Id = 0;
 
 function LessonBuilder() {
-  const [notes, setNotes] = useState({id:'', name: '', description: '', title: '', component: []});
+  const [notes, setNotes] = useState({id:'', name: '', editing: true, component: []});
+  const [lessonData, setLessonData] = useState(initialLessonState);
   const [formData, setFormData] = useState(initialFormState);
+  
   const [SpinnerHandler, setSpinnerHandler] = useState(true);
-
   const [modalState, setModal] = React.useState(true);
 
   // const handleOpen = () => {
   //   setOpen(true);
   // };
 
-  const handleClose = () => {
-    setModal(false);
-  };
 
-
-  useEffect(() => {
-    if(!modalState) {
-      fetchNotes(); 
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(!modalState) {
+  //     fetchNotes(); 
+  //   }
+  // }, [modalState]);
 
   async function onChange(e) {
     if (!e.target.files[0]) return
@@ -72,15 +70,20 @@ function LessonBuilder() {
   }
 
   async function createNote() {
-    if (!formData.name) return;
-    await API.graphql({ query: createNoteMutation, variables: { input: formData } });
+    if (!lessonData.name) return;
+    lessonData.component = JSON.stringify(lessonData.component);
+    await API.graphql({ query: createNoteMutation, variables: { input: lessonData } });
     if (formData.image) {
       const image = await Storage.get(formData.image);
-      console.log(image);
       formData.image = image;
     }
-    setNotes([ formData ]);
-    setFormData(initialFormState);
+
+    lessonData.component = JSON.parse(lessonData.component);
+    fetchNotes();
+    setLessonData(initialFormState);
+    setModal(false);
+
+    console.log(notes)
   }
 
 
@@ -138,7 +141,7 @@ function LessonBuilder() {
     alert("Deleted");
 
     // Set the new updated component element to the state
-    setNotes({id: newArrAfterDelete.id, name: newArrAfterDelete.name, description: newArrAfterDelete.description, title: newArrAfterDelete.title, component: newComp});
+    setNotes({id: newArrAfterDelete.id, name: newArrAfterDelete.name, component: newComp});
 
   }
 
@@ -161,7 +164,7 @@ function LessonBuilder() {
 
   return (
     <div className="App">
-      <Modal clicked={createNote} open={modalState} changed={e => setFormData({ ...formData, 'name': e.target.value})}/>
+      <Modal clicked={createNote} open={modalState} changed={e => setLessonData({ ...lessonData, 'name': e.target.value})}/>
       <h1>Create Mode</h1>
       <input
         type="file"
