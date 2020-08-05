@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
 import { listNotes } from '../../graphql/queries';
-import { deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
+import { createNote as createNoteMutation ,deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
 import Spinner from '../../Component/UI/Spinner/Spinner';
 import Modal from '../../Component/UI/Modal/CreateModeModal';
 
@@ -28,8 +28,11 @@ function LessonBuilder() {
     setModal(false);
   };
 
+
   useEffect(() => {
-    fetchNotes();
+    if(!modalState) {
+      fetchNotes(); 
+    }
   }, []);
 
   async function onChange(e) {
@@ -68,20 +71,19 @@ function LessonBuilder() {
 
   }
 
-  // async function createNote() {
-  //   if (!formData.name || !formData.description) return;
-  //   let comp = formData;
-  //   delete comp.component;
-  //   formData.component = JSON.stringify(comp);
-  //   await API.graphql({ query: createNoteMutation, variables: { input: formData } });
-  //   if (formData.image) {
-  //     const image = await Storage.get(formData.image);
-  //     console.log(image);
-  //     formData.image = image;
-  //   }
-  //   setNotes([ ...notes, formData ]);
-  //   setFormData(initialFormState);
-  // }
+  async function createNote() {
+    if (!formData.name) return;
+    await API.graphql({ query: createNoteMutation, variables: { input: formData } });
+    if (formData.image) {
+      const image = await Storage.get(formData.image);
+      console.log(image);
+      formData.image = image;
+    }
+    setNotes([ formData ]);
+    setFormData(initialFormState);
+  }
+
+
 
 // Funtion to update the data
   async function updateNote() {
@@ -159,7 +161,7 @@ function LessonBuilder() {
 
   return (
     <div className="App">
-      <Modal clicked={handleClose} open={modalState}/>
+      <Modal clicked={createNote} open={modalState} changed={e => setFormData({ ...formData, 'name': e.target.value})}/>
       <h1>Create Mode</h1>
       <input
         type="file"
