@@ -59,7 +59,7 @@ const SimpleModal = (props) => {
         Please type the Title of you Lesson plan below
       </Typography>
       <form className={classes.root} noValidate autoComplete="off">
-        <TextField id="outlined-basic" label="Lesson Plan" variant="outlined" />
+        <TextField id="outlined-basic" label="Lesson Plan" variant="outlined" onChange={props.changed} required/>
       </form>
       <Typography variant="body2" color="error"> 
       (You can change it later as well)
