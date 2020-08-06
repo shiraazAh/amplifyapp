@@ -21,7 +21,7 @@ const LessonBuilder = (props) => {
   const [formData, setFormData] = useState(initialFormState);
   
   const [SpinnerHandler, setSpinnerHandler] = useState(true);
-  const [modalState, setModal] = useState(true);
+  const [modalState, setModal] = useState(false);
 
   // const handleOpen = () => {
   //   setOpen(true);
@@ -82,6 +82,7 @@ const LessonBuilder = (props) => {
   }
 
   async function createNote() {
+    setSpinnerHandler(true);
     if (!lessonData.name) return;
     lessonData.component = JSON.stringify(lessonData.component);
     await API.graphql({ query: createNoteMutation, variables: { input: lessonData } });
@@ -91,9 +92,9 @@ const LessonBuilder = (props) => {
     }
 
     lessonData.component = JSON.parse(lessonData.component);
+    setModal(false);
     fetchNotes();
     setLessonData(initialFormState);
-    setModal(false);
   }
 
 
@@ -189,10 +190,8 @@ const LessonBuilder = (props) => {
   //   await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
   // }
 
-
-  return (
-    <div className="App">
-      <Modal clicked={createNote} open={modalState} changed={e => setLessonData({ ...lessonData, 'name': e.target.value})}/>
+  let body = (
+    <div>
       <h1>Create Mode</h1>
       <input
         type="file"
@@ -235,6 +234,12 @@ const LessonBuilder = (props) => {
       }      
       </div>
       <Button variant="contained" color="primary" onClick={updateEditing}>Save</Button>
+      </div>)
+
+  return (
+    <div className="App">
+      <Modal clicked={createNote} open={modalState} spinner={SpinnerHandler} changed={e => setLessonData({ ...lessonData, 'name': e.target.value})}/>
+      {modalState ? null : body }
     </div>
   );
 }
