@@ -24,15 +24,18 @@ const useStyles = makeStyles((theme) => ({
     color: '#333847'
   },
   cover: {
-    width: 300,
+    width: 100,
+    float: 'left',
+    left: 0,
   },
   align: {
     alignItems: 'unset',
-    display: 'inline-flex'
+    display: 'inline-flex',
+    justifyContent: 'left',
   }
 }));
 
-export default function MediaControlCard() {
+export default function MediaControlCard(props) {
   const classes = useStyles();
 
   return (
@@ -46,10 +49,10 @@ export default function MediaControlCard() {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            Pink Tower
+            {props.title}
           </Typography>
           <Typography variant="subtitle1" >
-          Series of 10 wooden, from 1 cubic centimetre to 1000 cubic centimetres. The activity requires the child to stack the cubes in the order of size.
+            {props.subtitle}
           </Typography>
         </CardContent>
       </div>
