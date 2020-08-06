@@ -7,6 +7,7 @@ import Modal from '../../Component/UI/Modal/CreateModeModal';
 
 import '../../App.module.css';
 import classes from './LessonBuilder.module.css';
+import Button from '@material-ui/core/Button';
 
 // import Editor from './Component/Editor'
 
@@ -14,13 +15,13 @@ const initialFormState = { name: '', description: '', title: ''};
 const initialLessonState = {name: '', editing: true, component: []}
 let Id = 0;
 
-function LessonBuilder() {
+const LessonBuilder = (props) => {
   const [notes, setNotes] = useState({id:'', name: '', editing: true, component: []});
   const [lessonData, setLessonData] = useState(initialLessonState);
   const [formData, setFormData] = useState(initialFormState);
   
   const [SpinnerHandler, setSpinnerHandler] = useState(true);
-  const [modalState, setModal] = React.useState(true);
+  const [modalState, setModal] = useState(true);
 
   // const handleOpen = () => {
   //   setOpen(true);
@@ -71,6 +72,7 @@ function LessonBuilder() {
 
   async function createNote() {
     if (!lessonData.name) return;
+    console.log(props)
     lessonData.component = JSON.stringify(lessonData.component);
     await API.graphql({ query: createNoteMutation, variables: { input: lessonData } });
     if (formData.image) {
@@ -119,6 +121,33 @@ function LessonBuilder() {
 
     // Set formData to initial state
     setFormData(initialFormState);
+  }
+
+  async function updateEditing() {
+
+    const newArr = notes;
+
+    newArr.editing = false;
+
+    newArr.component = JSON.stringify(newArr.component);
+    // Delete createdAt and updatedAt and createdAt as it is unwanted in updating element
+    delete newArr.createdAt;
+    delete newArr.updatedAt;
+
+    // Send the new updated version to the data base
+    await API.graphql({ query: updateNoteMutation, variables: { input: newArr } });
+
+    // Alert to show its done
+    alert("Done");
+
+    // Parse JSON and save the new element to the state
+    newArr.component = JSON.parse(newArr.component);
+    setNotes(newArr);
+
+    // Set formData to initial state
+    setFormData(initialFormState);
+
+    props.history.replace('/');
   }
 
 // Function to delete data
@@ -206,6 +235,7 @@ function LessonBuilder() {
         ))
       }      
       </div>
+      <Button variant="contained" color="primary" onClick={updateEditing}>Save</Button>
     </div>
   );
 }
