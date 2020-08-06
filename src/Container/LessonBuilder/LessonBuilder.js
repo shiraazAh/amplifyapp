@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
-import { listNotes } from '../../graphql/queries';
+import { listNotes} from '../../graphql/queries';
 import { createNote as createNoteMutation ,deleteNote as deleteNoteMutation, updateNote as updateNoteMutation } from '../../graphql/mutations';
 import Spinner from '../../Component/UI/Spinner/Spinner';
 import Modal from '../../Component/UI/Modal/CreateModeModal';
@@ -48,12 +48,23 @@ const LessonBuilder = (props) => {
     const apiData = await API.graphql({ query: listNotes });
     const allData = apiData.data.listNotes.items;
 
-    // Storing the data in variable
-    const notesFromAPI = allData[0];
-
+    for(let obj of allData){
+        obj.createdAt = obj.createdAt.replace(/[-T:.Z]/g, '');
+      }
+    
+      let largest = allData[0].createdAt;
+      let notesFromAPI = [];
+      for (var i = 0; i < allData.length; i++) {
+          if (largest < allData[i].createdAt ) {
+              largest = allData[i].createdAt;
+              // Storing the data in variable
+              notesFromAPI = allData[i];
+          }
+      }
+  
     // Parsing the JSON element
     const parsedComponent = JSON.parse(notesFromAPI.component);
-    allData[0].component = parsedComponent;
+    notesFromAPI.component = parsedComponent;
 
     // If there is an image, get from storage
     await Promise.all(parsedComponent.map(async note => {
@@ -72,7 +83,6 @@ const LessonBuilder = (props) => {
 
   async function createNote() {
     if (!lessonData.name) return;
-    console.log(props)
     lessonData.component = JSON.stringify(lessonData.component);
     await API.graphql({ query: createNoteMutation, variables: { input: lessonData } });
     if (formData.image) {
@@ -84,8 +94,6 @@ const LessonBuilder = (props) => {
     fetchNotes();
     setLessonData(initialFormState);
     setModal(false);
-
-    console.log(notes)
   }
 
 
@@ -181,15 +189,6 @@ const LessonBuilder = (props) => {
   //   await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
   // }
 
-  // function switchNoteHandler(){ 
-  //   const newArr = notes;
-  //   const newArrComponent = newArr.component;
-  //   const newForm = formData;
-  //   newArrComponent.push(newForm);
-  //   setFormData(initialFormState);
-  //   setNotes(newArr);
-  //   updateNote();
-  // }
 
   return (
     <div className="App">
