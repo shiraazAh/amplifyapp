@@ -6,15 +6,17 @@ import NavigationItem from '../../Component/Navigation/NavigationItem/Navigation
 
 import { API, Storage } from 'aws-amplify';
 import { listNotes } from '../../graphql/queries';
+import Spinner from '../../Component/UI/Spinner/Spinner';
 
 import classes from './Dashboard.module.css'
 
 const Dashboard = (props) => {
 
     const [data, setData] = useState([]);
-    const [SpinnerHandler, setSpinnerHandler] = useState(true);
+    const [SpinnerHandler, setSpinnerHandler] = useState(false);
     
     useEffect(() => {
+        setSpinnerHandler(true);
         fetchNotes(); 
     }, []);
 
@@ -48,7 +50,7 @@ const Dashboard = (props) => {
                 <Toolbar></Toolbar>
                 <p>Choose a Lesson Plan or <span><Button><NavigationItem path='/lessonbuilder' exact>Create Lesson Plan</NavigationItem></Button></span></p>
                 <div className={classes.Cards}>
-                {data ? data.map(el => el.editing ? null : <Card key={el.name} title={el.name} subtitle="whatever"/>) : null }
+                {SpinnerHandler ? <Spinner /> : data.map(el => el.editing ? null : <Card key={el.name} title={el.name} subtitle="whatever"/>) }
                 </div>
             </div>
         )
